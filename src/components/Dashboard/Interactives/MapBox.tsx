@@ -10,6 +10,7 @@ interface Coordinates {
   lng: number;
 }
 
+
 const MapBoxLocation: React.FC<{ location: string }> = ({ location }) => {
   const [coordinates, setCoordinates] = useState<Coordinates | null>(null);
 
