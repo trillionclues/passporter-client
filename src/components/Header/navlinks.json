@@ -1,0 +1,27 @@
+[
+  {
+    "id": 1,
+    "title": "About Us",
+    "url": "/about"
+  },
+  {
+    "id": 2,
+    "title": "Services",
+    "url": "/services"
+  },
+  {
+    "id": 3,
+    "title": "Track Application",
+    "url": "/track-applications"
+  },
+  {
+    "id": 4,
+    "title": "Appointments",
+    "url": "/appointments"
+  },
+  {
+    "id": 5,
+    "title": "Contact",
+    "url": "/contact"
+  }
+]
