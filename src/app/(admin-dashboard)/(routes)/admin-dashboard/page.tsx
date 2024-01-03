@@ -1,11 +1,9 @@
 "use client";
-import ApplicationCard from "@/components/Dashboard/ApplicationCard";
+import AdminApplicationCard from "@/components/Admin Dashboard/AdminApplicationCard";
 import EmptyApplication from "@/components/Events/EmptyApplication";
 import { getQueueApplications } from "@/redux/actions/Admin/getQueueApplications.service";
 import { logoutService } from "@/redux/actions/authActions/logout.service";
 import { AppDispatch, RootState } from "@/redux/store/store";
-import Image from "next/image";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useEffect } from "react";
 import { TbLogout2 } from "react-icons/tb";
@@ -54,7 +52,7 @@ const AdminDashboardPage = () => {
             ) : (
               <div className="flex flex-col gap-6 overflow-y-auto h-full md:h-[70vh] mt-4">
                 {queueList?.map((application) => (
-                  <ApplicationCard
+                  <AdminApplicationCard
                     key={application._id}
                     application={application}
                   />
