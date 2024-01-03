@@ -1,8 +1,10 @@
 "use client";
 import EmptyApplication from "@/components/Events/EmptyApplication";
 import { getRoleRequests } from "@/redux/actions/Admin/getRoleUpgradeRequests.service";
+import { processRoleUpgradeRequests } from "@/redux/actions/Admin/processRoleUpgradeRequests";
 import { AppDispatch, RootState } from "@/redux/store/store";
 import React, { useEffect } from "react";
+import { FaSpinner } from "react-icons/fa";
 import { useDispatch, useSelector } from "react-redux";
 
 const RoleRequests = () => {
@@ -14,7 +16,19 @@ const RoleRequests = () => {
   const handleGetRoleRequests = async () => {
     await getRoleRequests(dispatch);
   };
-  //   console.log(roleUpgradeRequests);
+  // console.log(roleUpgradeRequests);
+
+  const handleProcessRoleRequest = async (
+    applicantId: string,
+    action: string
+  ) => {
+    try {
+      await processRoleUpgradeRequests(dispatch, applicantId, action);
+      await handleGetRoleRequests();
+    } catch (error) {
+      console.error("Error processing role request:", error);
+    }
+  };
 
   useEffect(() => {
     handleGetRoleRequests();
@@ -44,13 +58,58 @@ const RoleRequests = () => {
                 {roleUpgradeRequests?.map((request: any) => (
                   <div
                     key={request._id}
-                    className="border p-4 rounded-md bg-white"
+                    className="flex flex-col md:flex-row items-center justify-between p-4 rounded-md border bg-white"
                   >
-                    <p>
-                      User: {request.firstname} {request.lastname}
-                    </p>
-                    <p>Email: {request.email}</p>
-                    <p>Role Upgrade Request: {request.roleUpgradeRequest}</p>
+                    <div className="flex items-center mb-4 md:mb-0">
+                      <img
+                        src={request.profilePicture}
+                        alt={`${request.firstname} ${request.lastname}'s avatar`}
+                        className="w-12 h-12 rounded-full mr-4"
+                      />
+                      <div>
+                        <p className="font-semibold">
+                          {request.firstname} {request.lastname}
+                        </p>
+                        <p className="text-sm text-gray-600">
+                          Requested on:{" "}
+                          {new Date(request.createdAt).toLocaleDateString()}
+                        </p>
+                      </div>
+                    </div>
+                    <div className="flex space-x-2">
+                      <button
+                        onClick={() =>
+                          handleProcessRoleRequest(request._id, "approve")
+                        }
+                        className={`bg-[#0d7836] text-white px-3 py-1 rounded-md hover:bg-green-500 focus:outline-none focus:ring-2 focus:ring-green-500 ${
+                          loading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {loading ? (
+                          <div className="animate-spin">
+                            <FaSpinner className="ml-2" />
+                          </div>
+                        ) : (
+                          "Approve"
+                        )}
+                      </button>
+                      <button
+                        onClick={() =>
+                          handleProcessRoleRequest(request._id, "reject")
+                        }
+                        className={`bg-red-500 text-white px-3 py-1 rounded-md hover:bg-red-600 focus:outline-none focus:ring-2 focus:ring-red-500 ${
+                          loading ? "opacity-50 cursor-not-allowed" : ""
+                        }`}
+                      >
+                        {loading ? (
+                          <div className="animate-spin">
+                            <FaSpinner className="ml-2" />
+                          </div>
+                        ) : (
+                          "Reject"
+                        )}
+                      </button>
+                    </div>
                   </div>
                 ))}
               </div>
